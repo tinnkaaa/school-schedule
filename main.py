@@ -1,0 +1,36 @@
+import django_setup
+from school_schedule.models import Subject, Teacher, SchoolClass, Student
+
+math = Subject.objects.create(name="Математика")
+english = Subject.objects.create(name="Англійська мова")
+history = Subject.objects.create(name="Історія")
+physics = Subject.objects.create(name="Фізика")
+chemistry = Subject.objects.create(name="Хімія")
+biology = Subject.objects.create(name="Біологія")
+geography = Subject.objects.create(name="Географія")
+
+math_teacher = Teacher.objects.create(first_name="Іван", last_name="Петренко", subject=math)
+english_teacher = Teacher.objects.create(first_name="Ольга", last_name="Ковальчук", subject=english)
+history_teacher = Teacher.objects.create(first_name="Віктор", last_name="Бондар", subject=history)
+physics_teacher = Teacher.objects.create(first_name="Микола", last_name="Шевченко", subject=physics)
+chemistry_teacher = Teacher.objects.create(first_name="Олександр", last_name="Кравець", subject=chemistry)
+biology_teacher = Teacher.objects.create(first_name="Людмила", last_name="Савчук", subject=biology)
+geography_teacher = Teacher.objects.create(first_name="Тетяна", last_name="Романюк", subject=geography)
+
+class_5a = SchoolClass.objects.create(name="5-А")
+class_6b = SchoolClass.objects.create(name="6-Б")
+class_7v = SchoolClass.objects.create(name="7-В")
+class_8g = SchoolClass.objects.create(name="8-Г")
+
+Student.objects.create(first_name="Андрій", last_name="Сидоренко", school_class=class_5a)
+Student.objects.create(first_name="Марія", last_name="Іваненко", school_class=class_5a)
+Student.objects.create(first_name="Петро", last_name="Коваленко", school_class=class_5a)
+Student.objects.create(first_name="Юлія", last_name="Ткаченко", school_class=class_6b)
+Student.objects.create(first_name="Богдан", last_name="Лисенко", school_class=class_6b)
+Student.objects.create(first_name="Олена", last_name="Романюк", school_class=class_6b)
+Student.objects.create(first_name="Сергій", last_name="Гринько", school_class=class_7v)
+Student.objects.create(first_name="Наталія", last_name="Кравчук", school_class=class_7v)
+Student.objects.create(first_name="Дмитро", last_name="Павленко", school_class=class_7v)
+Student.objects.create(first_name="Ірина", last_name="Бондаренко", school_class=class_8g)
+Student.objects.create(first_name="Владислав", last_name="Мельник", school_class=class_8g)
+Student.objects.create(first_name="Катерина", last_name="Шевченко", school_class=class_8g)
