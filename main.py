@@ -1,36 +1,92 @@
 import django_setup
-from school_schedule.models import Subject, Teacher, SchoolClass, Student
+from school_schedule.models import Subject, Teacher, SchoolClass, Student, Grade, Schedule
+from datetime import datetime
 
-math = Subject.objects.create(name="Математика")
-english = Subject.objects.create(name="Англійська мова")
-history = Subject.objects.create(name="Історія")
-physics = Subject.objects.create(name="Фізика")
-chemistry = Subject.objects.create(name="Хімія")
-biology = Subject.objects.create(name="Біологія")
-geography = Subject.objects.create(name="Географія")
+def add_subject():
+    name = input("Назва предмету: ")
+    description = input("Опис (необов'язково): ")
+    Subject.objects.create(name=name, description=description)
+    print(f"Предмет '{name}' додано!")
 
-math_teacher = Teacher.objects.create(first_name="Іван", last_name="Петренко", subject=math)
-english_teacher = Teacher.objects.create(first_name="Ольга", last_name="Ковальчук", subject=english)
-history_teacher = Teacher.objects.create(first_name="Віктор", last_name="Бондар", subject=history)
-physics_teacher = Teacher.objects.create(first_name="Микола", last_name="Шевченко", subject=physics)
-chemistry_teacher = Teacher.objects.create(first_name="Олександр", last_name="Кравець", subject=chemistry)
-biology_teacher = Teacher.objects.create(first_name="Людмила", last_name="Савчук", subject=biology)
-geography_teacher = Teacher.objects.create(first_name="Тетяна", last_name="Романюк", subject=geography)
+def add_teacher():
+    first_name = input("Ім'я вчителя: ")
+    last_name = input("Прізвище вчителя: ")
+    subjects = Subject.objects.all()
+    print("Доступні предмети:")
+    for s in subjects:
+        print(f"{s.id}: {s.name}")
+    subject_id = int(input("ID предмету: "))
+    subject = Subject.objects.get(id=subject_id)
+    Teacher.objects.create(first_name=first_name, last_name=last_name, subject=subject)
+    print(f"Вчитель {first_name} {last_name} доданий!")
 
-class_5a = SchoolClass.objects.create(name="5-А")
-class_6b = SchoolClass.objects.create(name="6-Б")
-class_7v = SchoolClass.objects.create(name="7-В")
-class_8g = SchoolClass.objects.create(name="8-Г")
+def add_class():
+    name = input("Назва класу: ")
+    year = int(input("Рік навчання: "))
+    SchoolClass.objects.create(name=name, year=year)
+    print(f"Клас '{name}' додано!")
 
-Student.objects.create(first_name="Андрій", last_name="Сидоренко", school_class=class_5a)
-Student.objects.create(first_name="Марія", last_name="Іваненко", school_class=class_5a)
-Student.objects.create(first_name="Петро", last_name="Коваленко", school_class=class_5a)
-Student.objects.create(first_name="Юлія", last_name="Ткаченко", school_class=class_6b)
-Student.objects.create(first_name="Богдан", last_name="Лисенко", school_class=class_6b)
-Student.objects.create(first_name="Олена", last_name="Романюк", school_class=class_6b)
-Student.objects.create(first_name="Сергій", last_name="Гринько", school_class=class_7v)
-Student.objects.create(first_name="Наталія", last_name="Кравчук", school_class=class_7v)
-Student.objects.create(first_name="Дмитро", last_name="Павленко", school_class=class_7v)
-Student.objects.create(first_name="Ірина", last_name="Бондаренко", school_class=class_8g)
-Student.objects.create(first_name="Владислав", last_name="Мельник", school_class=class_8g)
-Student.objects.create(first_name="Катерина", last_name="Шевченко", school_class=class_8g)
+def add_student():
+    first_name = input("Ім'я учня: ")
+    last_name = input("Прізвище учня: ")
+    classes = SchoolClass.objects.all()
+    print("Доступні класи:")
+    for c in classes:
+        print(f"{c.id}: {c.name}")
+    class_id = int(input("ID класу: "))
+    school_class = SchoolClass.objects.get(id=class_id)
+    Student.objects.create(first_name=first_name, last_name=last_name, school_class=school_class)
+    print(f"Учень {first_name} {last_name} доданий!")
+
+def add_schedule():
+    day_of_week = input("День тижня: ")
+    time_str = input("Час початку: ")
+    time = datetime.strptime(time_str, "%H:%M").time()
+
+    subjects = Subject.objects.all()
+    print("Доступні предмети:")
+    for s in subjects:
+        print(f"{s.id}: {s.name}")
+    subject_id = int(input("ID предмету: "))
+    subject = Subject.objects.get(id=subject_id)
+
+    classes = SchoolClass.objects.all()
+    print("Доступні класи:")
+    for c in classes:
+        print(f"{c.id}: {c.name}")
+    class_id = int(input("ID класу: "))
+    classroom = SchoolClass.objects.get(id=class_id)
+
+    teachers = Teacher.objects.filter(subject=subject)
+    print("Доступні вчителі цього предмету:")
+    for t in teachers:
+        print(f"{t.id}: {t.first_name} {t.last_name}")
+    teacher_id = int(input("ID вчителя: "))
+    teacher = Teacher.objects.get(id=teacher_id)
+
+    Schedule.objects.create(subject=subject, classroom=classroom, teacher=teacher,
+                            day_of_week=day_of_week, time=time)
+    print("Заняття додано!")
+
+def add_grade():
+    students = Student.objects.all()
+    print("Доступні учні:")
+    for s in students:
+        print(f"{s.id}: {s.first_name} {s.last_name}")
+    student_id = int(input("ID учня: "))
+    student = Student.objects.get(id=student_id)
+
+    subjects = Subject.objects.all()
+    print("Доступні предмети:")
+    for s in subjects:
+        print(f"{s.id}: {s.name}")
+    subject_id = int(input("ID предмету: "))
+    subject = Subject.objects.get(id=subject_id)
+
+    grade_value = int(input("Оцінка: "))
+    date_str = input("Дата (YYYY-MM-DD): ")
+    date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    comment = input("Коментар (необов'язково): ")
+
+    Grade.objects.create(student=student, subject=subject, grade=grade_value, date=date, comment=comment)
+    print("Оцінка додана!")
