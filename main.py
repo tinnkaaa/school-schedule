@@ -90,3 +90,30 @@ def add_grade():
 
     Grade.objects.create(student=student, subject=subject, grade=grade_value, date=date, comment=comment)
     print("Оцінка додана!")
+
+while True:
+    print("1. Додати предмет")
+    print("2. Додати вчителя")
+    print("3. Додати клас")
+    print("4. Додати учня")
+    print("5. Додати заняття в розклад")
+    print("6. Додати оцінку")
+    print("0. Вихід")
+    choice = input("Вибір: ")
+
+    if choice == "1":
+        add_subject()
+    elif choice == "2":
+        add_teacher()
+    elif choice == "3":
+        add_class()
+    elif choice == "4":
+        add_student()
+    elif choice == "5":
+        add_schedule()
+    elif choice == "6":
+        add_grade()
+    elif choice == "0":
+        break
+    else:
+        print("Невірний вибір!")
